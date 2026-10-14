@@ -5,31 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Painel de Tarefas</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="cartao-aplicacao">
+    <main class="cartao-aplicacao">
         <header class="cabecalho-aplicacao">
-            <h1>Minhas Tarefas </h1>
-            <button class="botao-icone" id="botao-alternar-tema">
-                <i class="fa-solid fa-moon"></i>
-            </button>
+            <div class="perfil">
+                <div class="avatar">
+                    <img src="foto,jpg.jpeg" alt="foto" id="foto-perfil">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="titulos">
+                    <h1>Minhas Tarefas</h1>
+                    <p id="data-atual"></p>
+                </div>
+            </div>
+            <div class="acoes-cabecalho">
+                <button class="botao-icone" id="botao-atualizacoes" aria-label="Ver atualizações" title="Ver atualizações">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </button>
+                <button class="botao-icone" id="botao-alternar-tema" aria-label="Alternar tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
         </header>
+
+        <section class="painel-resumo">
+            <div class="resumo-numeros">
+                <div class="resumo-item">
+                    <strong id="total-pendentes">0</strong>
+                    <span>pendentes​</span>
+                </div>
+                <div class="resumo-item">
+                    <strong id="total-concluidas">0</strong>
+                    <span>concluídas</span>
+                </div>
+                <div class="resumo-item">
+                    <strong id="percentual">0%</strong>
+                    <span>do dia</span>
+                </div>
+            </div>
+            <div class="progresso">
+                <div class="barra" id="barra-progresso"></div>
+            </div>
+        </section>
+
         <div class="caixa-entrada">
-            <input type="text" id="campo-tarefa" placeholder="O que vamos fazer hoje?..." maxlenght="40">
+            <input type="text" id="campo-tarefa" placeholder="O que vamos fazer hoje?..." maxlength="40">
+            <select id="campo-prioridade" aria-label="Prioridade">
+                <option value="alta">Prioridade alta 🟢</option>
+                <option value="media" selected>Prioridade média 🟡​</option>
+                <option value="baixa">Prioridade baixa 🔴​</option>
+            </select>
             <button class="botao-principal" id="botao-adicionar">
                 <i class="fa-solid fa-plus"></i> Adicionar
             </button>
         </div>
-        <ul class="lista-tarefas" id="lista-tarefas">
-            <!-- As tarefas serão inseridas dinamicamente via JavaScript -->
 
-        </ul>
+        <nav class="abas">
+            <button class="aba ativa" data-filtro="todas">Todas <span class="contagem" id="contagem-todas">0</span></button>
+            <button class="aba" data-filtro="pendentes">Pendentes <span class="contagem" id="contagem-pendentes">0</span></button>
+            <button class="aba" data-filtro="concluidas">Concluídas <span class="contagem" id="contagem-concluidas">0</span></button>
+        </nav>
+
+        <ul class="lista-tarefas" id="lista-tarefas"></ul>
+
         <footer class="rodape-aplicacao">
             <span id="contador-tarefas">0 tarefas na lista</span>
+            <button class="botao-limpar" id="botao-limpar">Limpar concluídas</button>
         </footer>
+    </main>
+
+    <div class="fundo-modal" id="modal-atualizacoes" hidden>
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+            <header class="modal-cabecalho">
+                <h2 id="titulo-modal">O que mudou no projeto</h2>
+                <button class="botao-icone" id="botao-fechar-modal" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+
+            <div class="modal-corpo">
+                <h3>Salvamento dos dados</h3>
+                <ul>
+                    <li>As tarefas agora são salvas no navegador e continuam lá depois de recarregar a página.</li>
+                    <li>O status de concluída também é salvo (método toJSON na classe Tarefa).</li>
+                    <li>Funções separadas para salvar e carregar, com uma chave fixa no localStorage.</li>
+                    <li>Se os dados salvos estiverem corrompidos, o carregamento não quebra mais a página.</li>
+                    <li>O tema claro ou escuro escolhido também fica salvo.</li>
+                </ul>
+
+                <h3>Novas funções</h3>
+                <ul>
+                    <li>Prioridade alta, média ou baixa em cada tarefa, com etiqueta e barra colorida.</li>
+                    <li>Abas Todas, Pendentes e Concluídas, cada uma com a sua contagem.</li>
+                    <li>Painel de resumo com pendentes, concluídas, percentual e barra de progresso.</li>
+                    <li>Botão para limpar todas as tarefas concluídas de uma vez.</li>
+                    <li>Mensagens amigáveis quando uma aba está vazia.</li>
+                    <li>Data de hoje embaixo do título.</li>
+                    <li>Este botão com a lista de atualizações.</li>
+                </ul>
+
+                <h3>Visual</h3>
+                <ul>
+                    <li>Foto de perfil em formato redondo, com ícone de reserva se a imagem não existir.</li>
+                    <li>Novas fontes, cores de prioridade e cartão com mais espaçamento.</li>
+                    <li>Botão de concluir em formato de círculo, que se preenche ao marcar.</li>
+                    <li>Layout ajustado para telas pequenas e animações reduzidas para quem prefere.</li>
+                </ul>
+
+                <h3>Correções e melhorias no código</h3>
+                <ul>
+                    <li>O <code>salvarTarefas()</code> estava fora da função e nunca era chamado.</li>
+                    <li>Corrigido o <code>maxlenght</code> para <code>maxlength</code> no campo de texto.</li>
+                    <li>Corrigido o erro de digitação no <code>transition</code> do CSS.</li>
+                    <li>Cada tarefa ganhou um <code>id</code> próprio, então concluir e excluir funcionam com as abas filtradas.</li>
+                    <li>O texto da tarefa é inserido com <code>textContent</code>, o que impede que HTML digitado quebre a página.</li>
+                    <li>Os botões da lista usam um único ouvinte de clique, em vez de <code>onclick</code> dentro do HTML.</li>
+                </ul>
+            </div>
+        </section>
     </div>
 
     <script src="script.js"></script>
